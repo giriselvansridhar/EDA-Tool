@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Improved UI</title>
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        body {
+            background-color: #1e1e2f;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .navbar {
+            background-color: #2a2b4d !important;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar-brand {
+            color: #ff6584;
+            font-weight: 600;
+        }
+
+        .navbar-toggler-icon {
+            color: #ff6584;
+        }
+
+        .sidebar-card {
+            background-color: #292b45;
+            color: white;
+            height: calc(100vh - 80px);
+            padding: 1rem;
+            border-radius: 15px;
+        }
+
+        .sidebar-card button {
+            width: 100%;
+            margin-bottom: 0.5rem;
+            background-color: #ff6584;
+            border: none;
+            padding: 0.7rem 1rem;
+            font-weight: 500;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar-card button:hover {
+            background-color: #ff2a6b;
+        }
+
+        .main-content-card {
+            background-color: #2a2b4d;
+            color: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container {
+            padding: 20px;
+        }
+
+        .form-label, .form-check-label {
+            color: #ccc;
+        }
+
+        .btn-primary {
+            background-color: #ff6584;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #ff2a6b;
+        }
+
+        .center-content {
+            text-align: center;
+        }
+
+        .image-placeholder {
+            margin: 0 auto;
+            display: block;
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .chat-box {
+            background-color: #ffffff;
+            color: #333;
+            margin: 1rem 0;
+            max-width: 80%;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Fixed Bottom Input Bar */
+        .fixed-bottom-bar {
+            background-color: #292b45;
+            padding: 1rem;
+        }
+
+        .bottom-input {
+            background-color: #33344b;
+            color: white;
+            padding: 0.7rem;
+            border-radius: 30px;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-plus {
+            background-color: #ff6584;
+            color: white;
+            border: none;
+            font-size: 1.5rem;
+            width: 50px;
+            height: 50px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .btn-plus:hover {
+            background-color: #ff2a6b;
+        }
+
+        .scrollable-content {
+            max-height: calc(100vh - 60px);
+            overflow-y: auto;
+        }
+
+        /* Form Styling */
+        .form-control {
+            background-color: #33344b;
+            color: white;
+            border: none;
+        }
+
+        .form-control:focus {
+            border-color: #ff6584;
+            box-shadow: 0 0 5px #ff6584;
+        }
+
+        .form-select {
+            background-color: #33344b;
+            color: white;
+        }
+
+        .form-select:focus {
+            border-color: #ff6584;
+            box-shadow: 0 0 5px #ff6584;
+        }
+
+        /* Smooth scrolling for navigation */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .tooltip-custom {
+            background-color: #ff6584;
+            color: white;
+            border-radius: 5px;
+            padding: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .scrollable-chat {
+    max-height: calc(100vh - 200px); /* Adjust this value to control the height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    margin-bottom: 60px; /* Space for the input field */
+}
+
+.chat-message {
+    margin-bottom: 10px; /* Add some space between chat messages */
+}
+
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar Column -->
+            <div class="col-md-2">
+                <div class="card sidebar-card">
+                    <button class="btn btn-primary mb-3" data-bs-toggle="tooltip" data-bs-placement="right" title="Create new observation">New Observation <i class="fas fa-plus-circle"></i></button>
+                    <div class="scrollable-content">
+                        <!-- Dynamically generated buttons -->
+                        <button class="btn btn-secondary mb-2">Observation 1</button>
+                        <button class="btn btn-secondary mb-2">Observation 2</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+
+                        <!-- Add more as needed -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Column -->
+            <div class="col-md-10">
+                <!-- Navbar -->
+                <nav class="navbar navbar-expand-lg navbar-dark">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="#">Improved UI</a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                            <ul class="navbar-nav me-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Features</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Pricing</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#">Action</a></li>
+                                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <button class="btn btn-danger">Export PYNB</button>
+                        </div>
+                    </div>
+                </nav>
+
+                <div class="row">
+                    <!-- Form Area -->
+                    <div class="col-md-3">
+                        <div class="card main-content-card form-container">
+                            <h5 class="mb-3">User Details</h5>
+                            <form class="row g-3 needs-validation" novalidate>
+                                <div class="col-md-6">
+                                    <label for="firstName" class="form-label">First Name</label>
+                                    <input type="text" class="form-control" id="firstName" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lastName" class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" id="lastName" required>
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="username" class="form-label">Username</label>
+                                    <input type="text" class="form-control" id="username" required>
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="formFile" class="form-label">Upload Image</label>
+                                    <input class="form-control" type="file" id="formFile">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="startDate" class="form-label">Start Date</label>
+                                    <input type="date" class="form-control" id="startDate">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="endDate" class="form-label">End Date</label>
+                                    <input type="date" class="form-control" id="endDate">
+                                </div>
+                                <div class="col-12">
+                                    <label for="exampleFormControlSelect1">Select your country</label>
+                                    <select class="form-select" id="exampleFormControlSelect1">
+                                        <option selected disabled>Choose...</option>
+                                        <option>United States</option>
+                                        <option>India</option>
+                                        <option>United Kingdom</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn btn-primary" type="submit">Submit Form</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Chat Area -->
+                    <!-- Chat Area -->
+<div class="col-md-9">
+    <div class="card main-content-card chat-box scrollable-chat" style="height: 500px;">
+        
+        
+            <div class="chat-message">Hello, how can I help you?</div>
+            <div class="chat-message">Can you assist me with my project?</div>
+            
+        
+        
+    </div>
+</div>
+
+                </div>
+
+                <!-- Input Field for Chat -->
+                <div class="fixed-bottom-bar d-flex justify-content-between align-items-center">
+                    <input type="text" class="form-control bottom-input" placeholder="Type your message here...">
+                    <button class="btn-plus ms-2"><i class="fas fa-plus"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS and Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz4fnFO9gybBgI1j8V5RXkI/Z6hBnmfUckK8Qc2KXwpPYfQRPIp6jIWcxh" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-gCcCvJ2j6s7g8ZXEyn5e+LxNchjYFvZvLBk5OM92yAL/zQasQFhZ+ZkErEIyJgpF" crossorigin="anonymous">
+    </script>
+
+    <!-- Tooltip activation -->
+    <script>
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+    </script>
+</body>
+
+</html>
