@@ -6,5 +6,11 @@ The main aim of the project is to provide
 This is a DatascienceXWebDevelpment Project.
 
 
+Objective: 
 
+In the DSFile Folder. We have file. That covers the notes topic for EDA. We are going to create a Notes.py that has all these operations. 
+
+
+
+![image](https://github.com/user-attachments/assets/e6d14883-be7e-4a51-95b4-fb8edec7c241)
 
