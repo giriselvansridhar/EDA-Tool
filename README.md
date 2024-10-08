@@ -17,25 +17,9 @@ ScreenShot for that file:
 
 ![image](https://github.com/user-attachments/assets/e6d14883-be7e-4a51-95b4-fb8edec7c241)
 
+In the **function folder** You will be find the core things we are working in this project. (The Actual Core process Things)
 
-Basically, 
-Here in this Tool,
-You can do many function in pandas such as
-Core Things:
-1. Finding Head
-2. '' Tail
-3. '' Info 
-4. Replacing the value
-5. Encodings
 
-Extra Visulations:
-
-May be 
-
-1. Bar Chart
-2. Pie chart
-
-etc..
 
 
 
