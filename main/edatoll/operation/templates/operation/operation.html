@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Improved UI</title>
+
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        .custom-card {
+            background-color: #4CAF50;
+            /* Green */
+            color: white;
+        }
+
+        body {
+            background-color: #1e1e2f;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .navbar {
+            background-color: #2a2b4d !important;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar-brand {
+            color: #ff6584;
+            font-weight: 600;
+        }
+
+        .navbar-toggler {
+            border-color: #ff6584;
+        }
+
+        .sidebar-card {
+            background-color: #292b45;
+            color: white;
+            height: calc(100vh - 80px);
+            padding: 1rem;
+            border-radius: 15px;
+        }
+
+        .sidebar-card button {
+            width: 100%;
+            margin-bottom: 0.5rem;
+            background-color: #ff6584;
+            border: none;
+            padding: 0.7rem 1rem;
+            font-weight: 500;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar-card button:hover {
+            background-color: #ff2a6b;
+        }
+
+        .main-content-card {
+            background-color: #2a2b4d;
+            color: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container {
+            padding: 20px;
+        }
+
+        .form-label,
+        .form-check-label {
+            color: #ccc;
+        }
+
+        .btn-primary {
+            background-color: #ff6584;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #ff2a6b;
+        }
+
+        .center-content {
+            text-align: center;
+        }
+
+        .image-placeholder {
+            margin: 0 auto;
+            display: block;
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .chat-box {
+            background-color: #ffffff;
+            color: #333;
+            margin: 1rem 0;
+            max-width: 80%;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .fixed-bottom-bar {
+            background-color: #292b45;
+            padding: 1rem;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .bottom-input {
+            background-color: #33344b;
+            color: white;
+            padding: 0.7rem;
+            border-radius: 30px;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-plus {
+            background-color: #ff6584;
+            color: white;
+            border: none;
+            font-size: 1.5rem;
+            width: 50px;
+            height: 50px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .btn-plus:hover {
+            background-color: #ff2a6b;
+        }
+
+        .scrollable-content {
+            max-height: calc(100vh - 60px);
+            overflow-y: auto;
+        }
+
+        .form-control {
+            background-color: #33344b;
+            color: white;
+            border: none;
+        }
+
+        .form-control:focus {
+            border-color: #ff6584;
+            box-shadow: 0 0 5px #ff6584;
+        }
+
+        .form-select {
+            background-color: #33344b;
+            color: white;
+        }
+
+        .form-select:focus {
+            border-color: #ff6584;
+            box-shadow: 0 0 5px #ff6584;
+        }
+
+        .scrollable-chat {
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+            margin-bottom: 80px;
+        }
+
+        .chat-message {
+            margin-bottom: 10px;
+        }
+
+        /* Chat container */
+        .chat-container {
+            background-color: #161030;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Scrollable chat */
+        .scrollable-chat {
+            overflow-y: auto;
+        }
+
+        /* Chat messages */
+        .chat-message {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* User messages */
+        .user-message {
+            background-color: #c89;
+            border-radius: 15px;
+            max-width: 60%;
+            align-self: flex-end;
+        }
+
+        /* Bot messages */
+        .bot-message {
+            background-color: #2a2b4d;
+            border-radius: 15px;
+            align-self: flex-start;
+            overflow-x: auto;
+        }
+
+        /* Result item images and datasets */
+        .result-item img.chart {
+            border-radius: 5px;
+            border: 1px solid #1f1e54;
+        }
+
+        .dataset {
+            background-color: #211540;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        /* Scroll to Bottom Button */
+        #scrollToBottomBtn {
+            border-radius: 5px;
+            background-color: #2a2b4d;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #scrollToBottomBtn:hover {
+            background-color: #3a3b5d;
+        }
+
+        .card-body {
+            background-color: #3c3d68;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+
+
+            <div class="col-md-2">
+                <div class="card sidebar-card">
+                    <button class="btn btn-primary mb-3" data-bs-toggle="tooltip" data-bs-placement="right"
+                        title="Create new observation">New Observation <i class="fas fa-plus-circle"></i></button>
+                    <div class="scrollable-content pe-2">
+                        <!-- Dynamically generated buttons -->
+                        <button class="btn btn-secondary mb-2">Observation 1</button>
+                        <button class="btn btn-secondary mb-2">Observation 2</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+                        <button class="btn btn-secondary mb-2">Observation 3</button>
+
+                        <!-- Add more as needed -->
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-md-10">
+
+                <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="#">
+                            <i class="fas fa-chart-line"></i> EDA Tool
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                            <ul class="navbar-nav me-auto">
+                                <!-- Basic Tools Dropdown -->
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        <i class="fas fa-tools"></i> Basic Tools
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#" onclick="showContent('head')"><i
+                                                    class="fas fa-arrow-up"></i> Head</a></li>
+                                        <li><a class="dropdown-item" href="#" onclick="showContent('tail')"><i
+                                                    class="fas fa-arrow-down"></i> Tail</a></li>
+                                        <li><a class="dropdown-item" href="#" onclick="showContent('shape')"><i
+                                                    class="fas fa-th"></i> Shape</a></li>
+                                        <li><a class="dropdown-item" href="#" onclick="showContent('info')"><i
+                                                    class="fas fa-info-circle"></i> Info</a></li>
+                                        <li><a class="dropdown-item" href="#" onclick="showContent('Datatypes')"><i
+                                                    class="fas fa-database"></i> Datatypes</a></li>
+                                        <li><a class="dropdown-item" href="#" onclick="showContent('Count_Value')"><i
+                                                    class="fas fa-list-ol"></i> Count</a></li>
+                                    </ul>
+                                </li>
+                                <!-- Datatype Dropdown -->
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        <i class="fas fa-database"></i> Datatype
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#"
+                                                onclick="showContent('Change_Datatype')"><i
+                                                    class="fas fa-exchange-alt"></i> Change Datatype</a></li>
+                                    </ul>
+                                </li>
+                                <!-- Replace Dropdown -->
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        <i class="fas fa-exchange-alt"></i> Replace
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#" onclick="showContent('Replace_Nan')"><i
+                                                    class="fas fa-question-circle"></i> Replace with NaN</a></li>
+                                        <li><a class="dropdown-item" href="#" onclick="showContent('Replace_Value')"><i
+                                                    class="fas fa-pencil-alt"></i> Replace with Value</a></li>
+                                        <li><a class="dropdown-item" href="#" onclick="showContent('Replace_Mean')"><i
+                                                    class="fas fa-calculator"></i> Replace with Mean</a></li>
+                                        <li><a class="dropdown-item" href="#" onclick="showContent('Replace_Mode')"><i
+                                                    class="fas fa-signal"></i> Replace with Mode</a></li>
+                                        <li><a class="dropdown-item" href="#" onclick="showContent('Replace_Median')"><i
+                                                    class="fas fa-balance-scale"></i> Replace with Median</a></li>
+                                    </ul>
+                                </li>
+                                <!-- Encoding Dropdown -->
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        <i class="fas fa-code"></i> Encoding
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#" onclick="showContent('OneHot')"><i
+                                                    class="fas fa-arrow-up"></i> OneHot Encoding</a></li>
+                                    </ul>
+                                </li>
+                                <!-- Visualization Dropdown -->
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        <i class="fas fa-chart-bar"></i> Visualization
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#" onclick="showContent('Heatmap')"><i
+                                                    class="fas fa-fire"></i> Heat Map</a></li>
+                                    </ul>
+                                </li>
+                                <!-- Drop Dropdown -->
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        <i class="fas fa-trash-alt"></i> Drop
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#" onclick="showContent('Drop_Column')"><i
+                                                    class="fas fa-arrow-up"></i> Column</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <!-- Export Button -->
+                            <form action="" method="GET">
+                                <button type="submit" name="export" value="notebook"
+                                    class="btn btn-outline-danger rounded-pill">
+                                    <i class="fas fa-file-export"></i> Export PYNB
+                                </button>
+                            </form>
+                        </div>
+
+                    </div>
+                </nav>
+
+
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="card main-content-card form-container">
+                            <div id="head" class="collapse card card-body mb-3">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="datasetOverview" class="form-label">Head</label>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="shapeInput" class="form-label">Enter Head Value?</label>
+                                        <input type="number" class="form-control" id="shapeInput"
+                                            placeholder="Enter shape value" name="first">
+                                    </div>
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" class="btn btn-primary" name="action" value="tail">View
+                                            Head</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div id="tail" class="collapse card card-body mb-3">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="datasetOverview" class="form-label">Tail</label>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="shapeInput" class="form-label">Enter Tail Value?</label>
+                                        <input type="number" class="form-control" id="shapeInput"
+                                            placeholder="Enter shape value" name="first">
+                                    </div>
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" class="btn btn-primary" name="action" value="tail">View
+                                            Tail</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div id="shape" class="collapse card card-body mb-3">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="shapeInput" class="form-label">Shape</label>
+                                    </div>
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" class="btn btn-primary" name="action" value="shape">View
+                                            Shape</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div id="info" class="collapse card card-body mb-3">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="shapeInput" class="form-label">Info</label>
+                                    </div>
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" class="btn btn-primary" name="action" value="info">View
+                                            Info</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div id="Datatypes" class="collapse card card-body mb-3">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="shapeInput" class="form-label">Data Types</label>
+                                    </div>
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" class="btn btn-primary" name="action"
+                                            value="datatypes">View Datatype</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div id="Count_Value" class="collapse card card-body mb-3">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="barChartColumnSelect" class="form-label">Select Column to
+                                            count</label>
+                                        <select class="form-control" id="barChartColumnSelect" name="bar_column"
+                                            required>
+                                            {% for column in column_list %}
+                                            <option value="{{ column }}">{{ column }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" class="btn btn-primary" name="action"
+                                            value="count">Count</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div id="Change_Datatype" class="collapse card card-body mb-3">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="barChartColumnSelect" class="form-label">Select Column to
+                                            change</label>
+                                        <select class="form-control" id="barChartColumnSelect" name="bar_column"
+                                            required>
+                                            {% for column in column_list %}
+                                            <option value="{{ column }}">{{ column }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="datatypeSelect" class="form-label">Select Datatype to change</label>
+                                        <select class="form-control" id="datatypeSelect" name="new_datatype" required>
+                                            <option value="int">Integer</option>
+                                            <option value="float">Float</option>
+                                            <option value="string">String</option>
+                                            <!-- Add more data type options if needed -->
+                                        </select>
+                                    </div>
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" class="btn btn-primary" name="action"
+                                            value="change_datatype">Change Datatype</button>
+                                    </div>
+                                </form>
+                            </div>
+
+
+
+                            <!-- Replace with Nan -->
+                            <div id="Replace_Nan" class="collapse card card-body mb-3">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="shapeInput" class="form-label">Replace with Nan</label>
+                                    </div>
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" class="btn btn-primary" name="action"
+                                            value="replace_nan">Replace</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Replace Value -->
+                            <div id="Replace_Value" class="collapse card card-body mb-3">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="shapeInput" class="form-label">Original Value</label>
+                                        <input type="number" class="form-control" id="originalValueInput"
+                                            placeholder="Enter original value" name="original_value">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="replaceValueInput" class="form-label">Replace Value</label>
+                                        <input type="number" class="form-control" id="replaceValueInput"
+                                            placeholder="Enter new value" name="replace_value">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="columnSelect" class="form-label">Select Column to replace</label>
+                                        <select class="form-control" id="columnSelect" name="column" required>
+                                            {% for column in column_list %}
+                                            <option value="{{ column }}">{{ column }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" class="btn btn-primary" name="action"
+                                            value="replace_value">Replace</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Replace with Mean -->
+                            <div id="Replace_Mean" class="collapse card card-body mb-3">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="columnSelect" class="form-label">Select Column to Replace with
+                                            Mean</label>
+                                        <select class="form-control" id="meanColumnSelect" name="column" required>
+                                            {% for column in column_list %}
+                                            <option value="{{ column }}">{{ column }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" class="btn btn-primary" name="action"
+                                            value="replace_mean">Replace with Mean</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Replace with Mode -->
+                            <div id="Replace_Mode" class="collapse card card-body mb-3">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="columnSelect" class="form-label">Select Column to Replace with
+                                            Mode</label>
+                                        <select class="form-control" id="modeColumnSelect" name="column" required>
+                                            {% for column in column_list %}
+                                            <option value="{{ column }}">{{ column }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" class="btn btn-primary" name="action"
+                                            value="replace_mode">Replace with Mode</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Replace with Median -->
+                            <div id="Replace_Median" class="collapse card card-body mb-3">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="columnSelect" class="form-label">Select Column to Replace with
+                                            Median</label>
+                                        <select class="form-control" id="medianColumnSelect" name="column" required>
+                                            {% for column in column_list %}
+                                            <option value="{{ column }}">{{ column }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" class="btn btn-primary" name="action"
+                                            value="replace_median">Replace with Median</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- OneHot Encoding Section -->
+                            <div id="OneHot" class="collapse card card-body mb-3">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="oneHotReplaceValue" class="form-label">Replace Value</label>
+                                        <input type="number" class="form-control" id="oneHotReplaceValue"
+                                            placeholder="Enter value to replace" name="replace_value">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="oneHotColumnSelect" class="form-label">Select Column</label>
+                                        <select class="form-control" id="oneHotColumnSelect" name="bar_column" required>
+                                            {% for column in column_list %}
+                                            <option value="{{ column }}">{{ column }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" class="btn btn-primary" name="action" value="one_hot">One
+                                            Hot Encode</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Heatmap Section -->
+                            <div id="Heatmap" class="collapse card card-body mb-3">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label class="form-label">HeatMap</label>
+                                    </div>
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" class="btn btn-primary" name="action"
+                                            value="view_heatmap">View Heatmap</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Drop Column Section -->
+                            <div id="Drop_Column" class="collapse card card-body mb-3">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="dropColumnSelect" class="form-label">Select Column to Drop</label>
+                                        <select class="form-control" id="dropColumnSelect" name="bar_column" required>
+                                            {% for column in column_list %}
+                                            <option value="{{ column }}">{{ column }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" class="btn btn-danger" name="action"
+                                            value="drop_column">Drop Column</button>
+                                    </div>
+                                </form>
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        </div>
+                    </div>
+
+                    <script>
+                        function toggleSpecificColumn(element) {
+                            const specificColumnDiv = document.getElementById('specificColumnDiv');
+                            specificColumnDiv.style.display = element.value === 'specific' ? 'block' : 'none';
+                        }
+                    </script>
+
+
+                    <!-- Chat Box Area -->
+                    <div class="col-md-9 chat-container" style="height: 600px;">
+                        <div class="scrollable-chat" id="scrollable-chat">
+                            <div class="chat-message" id="results">
+                                <!-- Loop through results -->
+                                {% for item in result_list %}
+                                <div class="result-item">
+                                    <div class="bot-message">
+                                        <p>{{ item.result }}</p>
+                                        <!-- Dataset display -->
+                                        {% if item.dataset %}
+                                        <div class="dataset">
+                                            {{ item.dataset|safe }}
+                                        </div>
+                                        {% endif %}
+                                        <!-- Scatter Plot -->
+                                        {% if item.scatter_plot %}
+                                        <img class="chart" src="data:image/png;base64,{{ item.scatter_plot }}" />
+                                        {% endif %}
+                                        <!-- Heatmap Image -->
+                                        {% if item.heatmap_image %}
+                                        <img class="chart" src="data:image/png;base64,{{ item.heatmap_image }}" />
+                                        {% endif %}
+                                        <!-- Bar Chart -->
+                                        {% if item.bar_chart %}
+                                        <img class="chart" src="data:image/png;base64,{{ item.bar_chart }}" />
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <!-- Scroll to Bottom Button -->
+                        <button id="scrollToBottomBtn" onclick="scrollToBottom()"
+                            class="d-flex justify-content end">Scroll to Bottom</button>
+                    </div>
+
+
+                    <div class="fixed-bottom-bar d-flex justify-content-between align-items-center">
+                        <input type="text" class="form-control bottom-input" placeholder="Type your message here...">
+                        <button class="btn-plus ms-2"><i class="fas fa-plus"></i></button>
+                    </div>
+
+                    <!-- CSS for ChatGPT-like chat area -->
+                    <style>
+
+                    </style>
+
+                    <!-- JavaScript for automatic scrolling -->
+                    <script>
+                        // Function to scroll to the bottom of the chat
+                        function scrollToBottom() {
+                            const chatContainer = document.getElementById('scrollable-chat');
+                            chatContainer.scrollTop = chatContainer.scrollHeight;
+                        }
+
+                        // Call scrollToBottom whenever new messages are added
+                        const resultsDiv = document.getElementById('results');
+                        const observer = new MutationObserver(scrollToBottom);
+                        observer.observe(resultsDiv, { childList: true });
+
+                        // Initial scroll to bottom
+                        scrollToBottom();
+                    </script>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Fixed Input Bar -->
+    <!-- <div class="fixed-bottom-bar">
+        <div class="input-group">
+            <input type="text" class="form-control bottom-input" placeholder="Type a message..." aria-label="Message">
+            <button class="btn btn-plus"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div> -->
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz4fnFO9gybBgI1j8V5RXkI/Z6hBnmfUckK8Qc2KXwpPYfQRPIp6jIWcxh"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-wEmeIV1mKuiNpPIjHn+lyYF7bRjt+XfLhVVpHjVh5gg2npfZcUqGij7j6oC/a+ui"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Function to show selected form content
+
+
+
+        // Show/hide specific column selection based on user's choice
+        document.getElementById('replaceScope').addEventListener('change', function () {
+            if (this.value === 'specific') {
+                document.getElementById('specificColumnDiv').style.display = 'block';
+            } else {
+                document.getElementById('specificColumnDiv').style.display = 'none';
+            }
+        });
+
+        // Initial state: hide specific column section
+        document.getElementById('specificColumnDiv').style.display = 'none';
+        function showContent(contentId) {
+            // Hide all collapsible content
+            document.querySelectorAll('.collapse').forEach(form => form.classList.remove('show'));
+
+            // Show selected content
+            const contentElement = document.getElementById(contentId);
+            if (contentElement) {
+                contentElement.classList.add('show');
+            }
+        }
+    </script>
+</body>
+
+</html>
