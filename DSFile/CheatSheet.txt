@@ -1,0 +1,497 @@
+-- Data Anaylysis & Machine Learning : 
+
+Step 1: Import the libraries
+Step 2: Read the data 
+Step 3: head() and tail () 
+step 4: Find and Treat the missing values
+    1. shape (rows , columns)  209 
+	2. info  ( no of rows ) 
+	Missing values --- 2 types
+	Finding the missing values: 
+	    1. Standard  -- detected by python -- info , isnull()
+		2. Non - Standard  --- cannot detect by python -- ?, #, * 
+		        1. data types --- object 
+				 data information --- numeric, object, float (to desired change) 
+				 ?-- error -- 2 method
+				   1. replace 
+				   2. ToNumeric , coherence --- nan
+						colum a-- 1, 2,3, ? , 4,5 #
+						coumn a -- object 
+						ToNumeric -- coherence (np.nan) 
+	Treat the missing values: 
+	    2 types --- delete / drop   & replace 
+		Drop : 
+		   delete/ drop -- marks -- placed / not, FathersName ---(null ) -- Drop the whole columns
+           Company details salary's Chennai Avg -- 1 person salary --- drop one row
+
+		   
+		Replace : 
+		   Mean / Median / Mode 
+		   Mean -- (No more outliers)
+		   Median -- (you have outliers) 
+		   Mode ( 4, 2) --- most frequent
+
+step 5: Handling non- numeric data
+    
+	Most of the machine learning models -- will not categorical data 
+    (change everything numeric )
+
+     Product Data : 
+	 category          category  Numeric
+   	 Product Category  Product Price
+	 Vegetables        Carrort  100
+	 Vegetables        Beetroot   50
+	 Dairy             Milk       30
+	 Dairy             Curd       20
+	 Fruits           Orange      100
+     Fruits           Apple        120
+
+	 
+	 Encoding 
+	 
+	 Product Category -- Vegetables, Dairy, Fruits
+	                      1, 2, 3
+						  
+				
+	 Numeric          category  Numeric
+   	 Product Category  Product Price
+	 1        Carrort  100
+	 1        Beetroot   50
+	 2             Milk       30
+	 2             Curd       20
+	 3           Orange      100
+     3           Apple        120
+
+	
+	Encoding-- 6 types: 
+	1.N-1 Dummy Encoding -- No sklearn library -- pandas -- get_dummies  dropfirst = True
+    2.One-hot encoding   
+	-- pandas library  get_dummies  dropfirst = False  
+	--Sklearn libraries
+	#library 
+	from sklearn.preprocessing import OneHotEncoder
+	
+	#initialise 
+	encode = OneHotEncoder()
+	
+	#Convert 
+	Output column --- Is it one column or more than one column
+	
+	Output -- one column 
+	
+	df['columnA_ended']= encode.fit_transform (df, column = [''])
+	 
+	#delete the old column 
+	df.drop([''columnA], inplace = True, axis = 1) 
+
+
+   or 
+   
+   	Output column ---  more than one column
+	array = encode.fit_transform (df, column = ['']).toarray()
+	
+	#create a df from series
+	
+	df_encode = pd.dataframe (array, colum = [columnA_ended, columnA_enocded2])
+	
+	df.concat(df_encode, axis = 1) 
+	
+	#delete the old column 
+	df.drop([''columnA], inplace = True, axis = 1) 
+
+	
+    3.Label encoding
+    4.Ordinal encoding 
+	5.Frequnecy encoding
+	6.Target encoding
+	
+	
+	1.N-1 Dummy Encoding  ( category value-- 2, 3) 
+	    
+	 Product Category  Product   Price
+	 Vegetables        Carrort    100
+	 Vegetables        Beetroot   50
+	 Dairy             Milk       30
+	 Dairy             Curd       20
+	 Fruits           Orange      100
+     Fruits           Apple       120
+		
+		
+		Productcategory --- Vegetables, Dairy, Fruits  (3 ) ---> 2 
+		
+		 Product   Price  ProductC_Vege  ProductC_Dairy  
+         Carrort    100     1                   0        
+         Beetroot   50      1                   0        
+         Milk       30      0                   1        
+         Curd       20      0                   1        
+        Orange      100     0                   0        
+        Apple       120     0                   0        
+
+    
+	pd.get_dummies()
+
+
+     
+		
+    2.One-hot encoding
+	
+	Product Category  Product   Price
+	 Vegetables        Carrort    100
+	 Vegetables        Beetroot   50
+	 Dairy             Milk       30
+	 Dairy             Curd       20
+	 Fruits           Orange      100
+     Fruits           Apple       120
+		
+		
+		Productcategory --- Vegetables, Dairy, Fruits
+		
+		 Product   Price  ProductC_Vege  ProductC_Dairy  ProductC_Fruits
+         Carrort    100     1                   0           0
+         Beetroot   50      1                   0           0
+         Milk       30      0                   1           0
+         Curd       20      0                   1           0
+        Orange      100     0                   0           1
+        Apple       120     0                   0           1
+		
+		
+    3.Label encoding
+	
+	
+	Product = {'Carrort', 'Beetroot', 'Milk', 'Curd', 'Orange', 'Apple'}
+	Encod_Value ={0,1, 2,3,4,5}
+	
+	 Product   Price       encoded_Product
+         Carrort    100  0
+         Beetroot   50   1
+         Milk       30   2
+         Curd       20   3
+        Orange      100  4
+        Apple       120  5
+		
+	   
+    4.Ordinal encoding  ( ranking order) 
+
+       Numerica  Category
+      Marks    Grade
+	  100       O 
+	  100       O 
+	  99        O 
+	  70        B 
+	  60        B
+	  40        D 
+	  30        F 
+	  
+	    Numerica  Category
+      Marks    Grade  Grade_encode 
+	  100       O      1
+	  100       O      1
+	  99        O      1
+	  70        B      3
+	  60        B      3
+	  40        D      5
+	  30        F      7
+	  
+	  Grade - encode   - O (1) , A(2),  B(3) ,C(4) ,  D(5) , E(6) , F(7) (Rank ) 
+	  
+	
+	5.Frequnecy encoding
+	
+	
+	Marks    Grade  Grade_Freq_encode 
+	  100       O      0.4
+	  100       O      0.4
+	  99        O      0.4
+	  70        B      0.2
+	  60        B       0.2
+	  40        D      0.14
+	  30        F      0.14
+	  
+	  
+	  O   3/7
+	  B   2/7
+	  D   1/7
+	  F   1/7
+	  
+	6.Target encoding
+	
+	
+	Smoker HeartAttack 
+	yes      Yes
+	yes      No
+	No       Yes
+	No       No
+	Yes      yes 
+	No       Yes
+	Yes      yes
+	No       No
+	
+	
+	Note : 
+	1. Unique values --in full column (drop the column) 
+	S.No , Name column ,
+	
+	
+	
+
+
+*********EDA ends *******
+
+
+
+N-1 encoding : 
+
+	Smoker HeartAttack 
+	yes      Yes
+	yes      No
+	No       Yes
+	No       No
+	Yes      yes 
+	No       Yes
+	Yes      yes
+	No       No
+	
+		Smoker HeartAttack   HeartAttack_yes
+	yes      Yes          1
+	yes      No           0
+	No       Yes          1
+	No       No           0
+	Yes      yes          1
+	No       Yes          1
+	Yes      yes          1
+	No       No           0 
+	
+	
+	
+One-hot encoding
+
+
+Smoker HeartAttack HeartAttack_yes  HeartAttack_No
+	yes      Yes  1,                 0
+	yes      No   0, 1
+	No       Yes  1, 0
+	No       No 0, 1
+	Yes      yes  1, 0
+	No       Yes 1,0
+	Yes      yes 1, 0
+	No       No 0,0
+	
+Label encoding
+
+yes -1 , No -2
+
+	Smoker HeartAttack  HeartAttack)encode
+	yes      Yes   1
+	yes      No    2
+	No       Yes   1
+	No       No    2
+	Yes      yes   1
+	No       Yes   1
+	Yes      yes   1
+	No       No    2
+	
+Ordinal encoding
+
+yes (worst) , No (best ) 
+
+yes - 1, No - 2
+
+	Smoker HeartAttack  HeartAttack)encode
+	yes      Yes   1
+	yes      No    2
+	No       Yes   1
+	No       No    2
+	Yes      yes   1
+	No       Yes   1
+	Yes      yes   1
+	No       No    2
+	
+Frequnecy encoding (mode) 
+
+	Smoker HeartAttack HeartAttack_encodd
+	yes      Yes       5/8 
+	yes      No        3/8 
+	No       Yes
+	No       No
+	Yes      yes 
+	No       Yes
+	Yes      yes
+	No       No
+	
+	
+	yes  - 5/ 8
+	No   -  3 / 8
+	
+	
+Target Encoding 
+
+
+Smoker HeartAttack  target smoker_encoded
+	yes      Yes     1          0.75 
+	yes      No      0          0.75 
+	No       Yes     1          0.5 
+	No       No      0
+	Yes      yes     0 
+	No       Yes     1
+	Yes      yes     1
+	No       No      0 
+	
+target -  HeartAttack
+	
+	1 Smoker --- HeartAttack     ---   3/4    0.75 
+	0 Non smoker -- heartAttack    ---   2/ 4  0.5
+	
+	
+Feature scaling: 
+
+ Salary Age Marks Rank
+ 10000   35  55   10
+ 12000   25  75    8
+ 25000   24  80    2
+ 90000   36  95    1
+ 
+ --- scale everything in the same range ---- feature scaling 
+ 
+ example -- 
+ 10th -- 500
+ 12th -- 600
+ 12th --1200
+ 10th -- 600
+ 
+ Percentage / 100 --- (495/500)*100  =99% / 100 scale 
+ Grade      1100/ 1200)*100 = 92%
+ 
+ 
+ 
+ scaling --2 methods (statistics ) 
+ 
+ 1. Z score Normalisation  
+ 
+     xnew= x-mean/ sigma
+	 z value from the table  
+ 
+ 2. Min - Max Normalisation (0 to 1) 
+ 
+ 
+    Salary Age Marks Rank
+ 10000   35  55   10
+ 12000   25  75    8
+ 25000   24  80    2
+ 90000   36  95    1
+ 
+ Salary -- min -- 10k max --90k 
+ 
+    Xnorm = (X - xmin) / (xmax - Xmin) 
+	
+	Salary -- 12000
+	    
+		= (12000- 10000)/(90000-10000)
+		=2000/ 80000
+		=2/80 
+		= 0.25 
+		
+		
+ 
+ 
+ Data Transformation : 
+ 
+ 
+skewness , symmetry
+
+
+
+log 
+
+exponential 
+
+
+
+4  2*2   2^2
+8  2*2*2   2^3
+16  2*2*2*2  2^4
+
+
+exponential of 2 to the power of 3 --- 8
+
+log(4)-- log2(4) -- 2
+log(8) -- log2(8) ---3 
+log(16) --log2(16) -- 4 
+
+
+4  2
+8  3
+16   4
+
+Note: (extra) 
+Simple linear regression one column x, one column of y (uni variate analysis) 
+Muliple linear regression one column x1, x2 (two )  one column of y ( Bi-variate analysis) 
+
+ 
+ 
+ 
+Outlier treatment : 
+
+
+teenagers data 
+
+Age   
+14
+15 
+17 
+19 
+13
+20
+22
+100
+1
+
+
+Outlier -- 2 methods
+Z score (-3 to 3) 
+
+
+
+IQR (inter quartile range ) 
+
+
+
+Feature Engineering : 
+
+#domain knowledge 
+#should have only necessary feature  and eliminate others
+
+
+Train test split 
+
+70% -- training  and 30% testing 
+80/ 20 
+70/ 30 
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Outlier treatment 
+Feature engineering 
+Train test split
+

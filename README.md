@@ -8,7 +8,7 @@ This is a DatascienceXWebDevelpment Project.
 
 Objective: 
 
-In the DSFile Folder. We have file. That covers the notes topic for EDA. We are going to create a Notes.py that has all these operations. 
+In the DSFile Folder. We have file. That covers the notes topic for EDA. We are going to create a Notes.py in the main that has all these operations. 
 
 
 
