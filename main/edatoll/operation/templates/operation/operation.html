@@ -259,38 +259,84 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-
-
             <div class="col-md-2">
                 <div class="card sidebar-card">
-                    <button class="btn btn-primary mb-3" data-bs-toggle="tooltip" data-bs-placement="right"
-                        title="Create new observation">New Observation <i class="fas fa-plus-circle"></i></button>
-                    <div class="scrollable-content pe-2">
-                        <!-- Dynamically generated buttons -->
-                        <button class="btn btn-secondary mb-2">Observation 1</button>
-                        <button class="btn btn-secondary mb-2">Observation 2</button>
-                        <button class="btn btn-secondary mb-2">Observation 3</button>
-                        <button class="btn btn-secondary mb-2">Observation 3</button>
-                        <button class="btn btn-secondary mb-2">Observation 3</button>
-                        <button class="btn btn-secondary mb-2">Observation 3</button>
-                        <button class="btn btn-secondary mb-2">Observation 3</button>
-                        <button class="btn btn-secondary mb-2">Observation 3</button>
-                        <button class="btn btn-secondary mb-2">Observation 3</button>
-                        <button class="btn btn-secondary mb-2">Observation 3</button>
-                        <button class="btn btn-secondary mb-2">Observation 3</button>
-                        <button class="btn btn-secondary mb-2">Observation 3</button>
-                        <button class="btn btn-secondary mb-2">Observation 3</button>
-                        <button class="btn btn-secondary mb-2">Observation 3</button>
-                        <button class="btn btn-secondary mb-2">Observation 3</button>
-                        <button class="btn btn-secondary mb-2">Observation 3</button>
-                        <button class="btn btn-secondary mb-2">Observation 3</button>
-                        <button class="btn btn-secondary mb-2">Observation 3</button>
-                        <button class="btn btn-secondary mb-2">Observation 3</button>
-
-                        <!-- Add more as needed -->
+                    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#newObservationModal" title="Create new observation">
+                        New Observation <i class="fas fa-plus-circle"></i>
+                    </button>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="scrollable-content pe-2" id="observationList">
+                            {% for observation in observations %}
+                                <button id="observation-btn-{{ forloop.counter }}" class="btn btn-secondary mb-2" name="tab_button" value="{{ forloop.counter }}">
+                                    {{ observation }}
+                                </button>
+                            {% endfor %}
+                        </div>
+                    </form>
+                    
+                    
+                </div>
+            </div>
+            
+            <!-- Modal for New Observation -->
+            <div class="modal fade" id="newObservationModal" tabindex="-1" aria-labelledby="newObservationLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content" style="background-color: #1f1e54;">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="newObservationLabel">New Observation</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Form for submitting the observation -->
+                            <form id="addObservationForm" method="POST" action="">
+                                {% csrf_token %}
+                                <label for="observationName" class="form-label">Enter Observation Name</label>
+                                <input type="text" class="form-control" id="observationName" placeholder="Observation name" name="add_observation_input" required>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                           
+                        </div>
                     </div>
                 </div>
             </div>
+            
+            <script>
+                let buttonCount = 1;
+            
+                function submitObservation() {
+                    const observationInput = document.getElementById('observationName').value;
+            
+                    if (observationInput) {
+                        fetch('', {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRFToken': '{{ csrf_token }}',
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: new URLSearchParams({ add_observation_input: observationInput })
+                        }).then(response => {
+                            if (response.ok) {
+                                document.getElementById('observationName').value = '';
+                                var modal = bootstrap.Modal.getInstance(document.getElementById('newObservationModal'));
+                                modal.hide();
+                            } else {
+                                alert("Failed to add observation.");
+                            }
+                        }).catch(error => {
+                            console.error('Error:', error);
+                            alert("Failed to add observation.");
+                        });
+                    } else {
+                        alert("Please enter an observation name.");
+                    }
+                }
+            </script>
+            
+            
+            
 
 
 
@@ -419,15 +465,14 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="shapeInput" class="form-label">Enter Head Value?</label>
-                                        <input type="number" class="form-control" id="shapeInput"
-                                            placeholder="Enter shape value" name="first">
+                                        <input type="number" class="form-control" id="shapeInput" placeholder="Enter head value" name="head_value" required>
                                     </div>
                                     <div class="d-grid gap-2">
-                                        <button type="submit" class="btn btn-primary" name="action" value="tail">View
-                                            Head</button>
+                                        <button type="submit" class="btn btn-primary" name="head" value="head">View Head</button>
                                     </div>
                                 </form>
                             </div>
+                            
 
                             <div id="tail" class="collapse card card-body mb-3">
                                 <form method="POST">
@@ -438,10 +483,10 @@
                                     <div class="mb-3">
                                         <label for="shapeInput" class="form-label">Enter Tail Value?</label>
                                         <input type="number" class="form-control" id="shapeInput"
-                                            placeholder="Enter shape value" name="first">
+                                            placeholder="Enter shape value" name="tail_value">
                                     </div>
                                     <div class="d-grid gap-2">
-                                        <button type="submit" class="btn btn-primary" name="action" value="tail">View
+                                        <button type="submit" class="btn btn-primary" name="tail" value="tail">View
                                             Tail</button>
                                     </div>
                                 </form>
@@ -454,7 +499,7 @@
                                         <label for="shapeInput" class="form-label">Shape</label>
                                     </div>
                                     <div class="d-grid gap-2">
-                                        <button type="submit" class="btn btn-primary" name="action" value="shape">View
+                                        <button type="submit" class="btn btn-primary" name="shape" value="shape">View
                                             Shape</button>
                                     </div>
                                 </form>
@@ -467,7 +512,7 @@
                                         <label for="shapeInput" class="form-label">Info</label>
                                     </div>
                                     <div class="d-grid gap-2">
-                                        <button type="submit" class="btn btn-primary" name="action" value="info">View
+                                        <button type="submit" class="btn btn-primary" name="info" value="info">View
                                             Info</button>
                                     </div>
                                 </form>
@@ -480,7 +525,7 @@
                                         <label for="shapeInput" class="form-label">Data Types</label>
                                     </div>
                                     <div class="d-grid gap-2">
-                                        <button type="submit" class="btn btn-primary" name="action"
+                                        <button type="submit" class="btn btn-primary" name="datatypes"
                                             value="datatypes">View Datatype</button>
                                     </div>
                                 </form>
@@ -492,7 +537,7 @@
                                     <div class="mb-3">
                                         <label for="barChartColumnSelect" class="form-label">Select Column to
                                             count</label>
-                                        <select class="form-control" id="barChartColumnSelect" name="bar_column"
+                                        <select class="form-control" id="barChartColumnSelect" name="count_columns"
                                             required>
                                             {% for column in column_list %}
                                             <option value="{{ column }}">{{ column }}</option>
@@ -500,7 +545,7 @@
                                         </select>
                                     </div>
                                     <div class="d-grid gap-2">
-                                        <button type="submit" class="btn btn-primary" name="action"
+                                        <button type="submit" class="btn btn-primary" name="count"
                                             value="count">Count</button>
                                     </div>
                                 </form>
@@ -513,7 +558,7 @@
                                         <label for="barChartColumnSelect" class="form-label">Select Column to
                                             change</label>
                                         <select class="form-control" id="barChartColumnSelect" name="bar_column"
-                                            required>
+                                            >
                                             {% for column in column_list %}
                                             <option value="{{ column }}">{{ column }}</option>
                                             {% endfor %}
@@ -529,7 +574,7 @@
                                         </select>
                                     </div>
                                     <div class="d-grid gap-2">
-                                        <button type="submit" class="btn btn-primary" name="action"
+                                        <button type="submit" class="btn btn-primary" name=""
                                             value="change_datatype">Change Datatype</button>
                                     </div>
                                 </form>
@@ -545,7 +590,7 @@
                                         <label for="shapeInput" class="form-label">Replace with Nan</label>
                                     </div>
                                     <div class="d-grid gap-2">
-                                        <button type="submit" class="btn btn-primary" name="action"
+                                        <button type="submit" class="btn btn-primary" name=""
                                             value="replace_nan">Replace</button>
                                     </div>
                                 </form>
@@ -574,7 +619,7 @@
                                         </select>
                                     </div>
                                     <div class="d-grid gap-2">
-                                        <button type="submit" class="btn btn-primary" name="action"
+                                        <button type="submit" class="btn btn-primary" name=""
                                             value="replace_value">Replace</button>
                                     </div>
                                 </form>
@@ -594,7 +639,7 @@
                                         </select>
                                     </div>
                                     <div class="d-grid gap-2">
-                                        <button type="submit" class="btn btn-primary" name="action"
+                                        <button type="submit" class="btn btn-primary" name=""
                                             value="replace_mean">Replace with Mean</button>
                                     </div>
                                 </form>
@@ -614,7 +659,7 @@
                                         </select>
                                     </div>
                                     <div class="d-grid gap-2">
-                                        <button type="submit" class="btn btn-primary" name="action"
+                                        <button type="submit" class="btn btn-primary" name=""
                                             value="replace_mode">Replace with Mode</button>
                                     </div>
                                 </form>
@@ -634,7 +679,7 @@
                                         </select>
                                     </div>
                                     <div class="d-grid gap-2">
-                                        <button type="submit" class="btn btn-primary" name="action"
+                                        <button type="submit" class="btn btn-primary" name=""
                                             value="replace_median">Replace with Median</button>
                                     </div>
                                 </form>
@@ -658,7 +703,7 @@
                                         </select>
                                     </div>
                                     <div class="d-grid gap-2">
-                                        <button type="submit" class="btn btn-primary" name="action" value="one_hot">One
+                                        <button type="submit" class="btn btn-primary" name="" value="one_hot">One
                                             Hot Encode</button>
                                     </div>
                                 </form>
@@ -672,7 +717,7 @@
                                         <label class="form-label">HeatMap</label>
                                     </div>
                                     <div class="d-grid gap-2">
-                                        <button type="submit" class="btn btn-primary" name="action"
+                                        <button type="submit" class="btn btn-primary" name=""
                                             value="view_heatmap">View Heatmap</button>
                                     </div>
                                 </form>
@@ -691,7 +736,7 @@
                                         </select>
                                     </div>
                                     <div class="d-grid gap-2">
-                                        <button type="submit" class="btn btn-danger" name="action"
+                                        <button type="submit" class="btn btn-danger" name=""
                                             value="drop_column">Drop Column</button>
                                     </div>
                                 </form>
@@ -737,45 +782,51 @@
 
 
                     <!-- Chat Box Area -->
-                    <div class="col-md-9 chat-container" style="height: 600px;">
+                    <div class="col-md-9 chat-container">
                         <div class="scrollable-chat" id="scrollable-chat">
-                            <div class="chat-message" id="results">
-                                <!-- Loop through results -->
-                                {% for item in result_list %}
-                                <div class="result-item">
-                                    <div class="bot-message">
-                                        <p>{{ item.result }}</p>
-                                        <!-- Dataset display -->
-                                        {% if item.dataset %}
+                            <!-- Check if result_list has any data -->
+                            {% if result_list %}
+                                <!-- Loop through each item in result_list -->
+                                {% for df_html in result_list %}
+                                    <div class="result-item">
+                                        <!-- Render the DataFrame HTML table -->
                                         <div class="dataset">
-                                            {{ item.dataset|safe }}
+                                            {{ df_html|safe }}
                                         </div>
-                                        {% endif %}
-                                        <!-- Scatter Plot -->
-                                        {% if item.scatter_plot %}
-                                        <img class="chart" src="data:image/png;base64,{{ item.scatter_plot }}" />
-                                        {% endif %}
-                                        <!-- Heatmap Image -->
-                                        {% if item.heatmap_image %}
-                                        <img class="chart" src="data:image/png;base64,{{ item.heatmap_image }}" />
-                                        {% endif %}
-                                        <!-- Bar Chart -->
-                                        {% if item.bar_chart %}
-                                        <img class="chart" src="data:image/png;base64,{{ item.bar_chart }}" />
-                                        {% endif %}
                                     </div>
-                                </div>
+                                    <hr> <!-- Optional separator between tables -->
                                 {% endfor %}
-                            </div>
+                            {% else %}
+                                <p>No data to display.</p>
+                            {% endif %}
                         </div>
+                        
                         <!-- Scroll to Bottom Button -->
-                        <button id="scrollToBottomBtn" onclick="scrollToBottom()"
-                            class="d-flex justify-content end">Scroll to Bottom</button>
+                        <button id="scrollToBottomBtn" onclick="scrollToBottom()">Scroll to Bottom</button>
                     </div>
-
+                    
+                    <script>
+                        function scrollToBottom() {
+                            var chatContainer = document.getElementById("scrollable-chat");
+                            chatContainer.scrollTop = chatContainer.scrollHeight;
+                        }
+                    </script>
+                    
+                    
+                    <script>
+                        function scrollToBottom() {
+                            var chatContainer = document.getElementById("scrollable-chat");
+                            chatContainer.scrollTop = chatContainer.scrollHeight;
+                        }
+                    </script>
+                    
+                    
+                    
+                    
 
                     <div class="fixed-bottom-bar d-flex justify-content-between align-items-center">
-                        <input type="text" class="form-control bottom-input" placeholder="Type your message here...">
+                        <textarea name="" id="" class="form-control bottom-input"></textarea>
+                       
                         <button class="btn-plus ms-2"><i class="fas fa-plus"></i></button>
                     </div>
 
@@ -854,6 +905,14 @@
                 contentElement.classList.add('show');
             }
         }
+
+
+        function addObservation() {
+    var observationName = document.getElementById('observationName').value;
+
+   
+}
+
     </script>
 </body>
 

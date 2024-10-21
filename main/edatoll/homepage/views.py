@@ -11,7 +11,7 @@ def Homepage(request):
         if form.is_valid():
             uploaded_file = request.FILES['file']
 
-            folder = os.path.join(settings.MEDIA_ROOT, 'uploads/')
+            folder = os.path.join(settings.MEDIA_ROOT, 'operation/uploads/')
             if not os.path.exists(folder):
                 os.makedirs(folder)
             
