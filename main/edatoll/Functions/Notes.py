@@ -94,7 +94,7 @@ def Convert_Datatype_of_the_column(df, column, datatype):
     except Exception as e:
         raise ValueError(f"An error occurred while converting the column '{column}': {str(e)}")
 
-    return df, e
+    return df  # No need to return 'e' if no error occurs
 
 
 def Replace_With_NaN(df, e):

@@ -34,10 +34,9 @@ def add_observation(session, observation_input):
     
     session['observations'].append(observation_input)
     session.modified = True  # Ensures session is saved after modification
-
-def handle_operation(request, dataframe, operation_type, value=None, column_name=None):
+def handle_operation(request, dataframe, operation_type, value=None, column_name=None, new_datatype=None):
     """
-    Handle different operations like head, tail, shape, info, datatypes, and value counts.
+    Handle different operations like head, tail, shape, info, datatypes, value counts, and datatype conversion.
     """
     if operation_type in ['head', 'tail']:
         data = get_head_or_tail(dataframe, operation_type, value or 5)
@@ -52,6 +51,13 @@ def handle_operation(request, dataframe, operation_type, value=None, column_name
             data = Notes.Value_Counts(dataframe, column_name)
         else:
             return f"Invalid column: '{column_name}'. Available columns: {', '.join(Columns_Of_Dataframe)}"
+    elif operation_type == 'convert_dtype' and column_name and new_datatype:
+        try:
+            # Perform the datatype conversion
+            updated_df, error = Notes.Convert_Datatype_of_the_column(dataframe, column_name, new_datatype)
+            data = f"Successfully converted column '{column_name}' to {new_datatype}."
+        except ValueError as e:
+            data = str(e)
     else:
         return None
 
@@ -60,7 +66,6 @@ def handle_operation(request, dataframe, operation_type, value=None, column_name
         return data.to_html(classes='table table-striped table-bordered', index=False)
     
     return str(data)
-
 
 def Operation(request):
     # Ensure 'session_data' and 'button_count' are initialized in the session
@@ -76,6 +81,8 @@ def Operation(request):
         head_value = request.POST.get('head_value')
         tail_value = request.POST.get('tail_value')
         count_columns = request.POST.get('count_columns')
+        datatype_column = request.POST.get('datatype_column')
+        new_datatype = request.POST.get('new_datatype')
         
         tab_button = request.POST.get('tab_button')
         observation_input = request.POST.get('add_observation_input')
@@ -97,7 +104,8 @@ def Operation(request):
             'shape': ('shape', None),
             'info': ('info', None),
             'datatypes': ('datatypes', None),
-            'count': ('count', None, count_columns)
+            'count': ('count', None, count_columns),
+            'convert_dtype': ('convert_dtype', None, datatype_column, new_datatype)
         }
 
         for operation_key, params in operations.items():
@@ -122,7 +130,8 @@ def Operation(request):
         'column_list': Columns_Of_Dataframe,
         'observations': request.session.get('observations', []),
         'button_count': request.session['button_count'],
-        'result_list': request.session['session_data'].get(current_session_key, {}).get('data', [])
+        'result_list': request.session['session_data'].get(current_session_key, {}).get('data', []),
+        'data_types': ['int64', 'float64', 'object', 'datetime64', 'bool']  # List of data types to choose from
     }
 
     return render(request, 'operation/operation.html', context)
