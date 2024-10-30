@@ -369,7 +369,7 @@
                                                     class="fas fa-th"></i> Shape</a></li>
                                         <li><a class="dropdown-item" href="#" onclick="showContent('info')"><i
                                                     class="fas fa-info-circle"></i> Info</a></li>
-                                        <li><a class="dropdown-item" href="#" onclick="showContent('Datatypes')"><i
+                                        <li><a class="dropdown-item" href="#" onclick="showContent('Datatypes1')"><i
                                                     class="fas fa-database"></i> Datatypes</a></li>
                                         <li><a class="dropdown-item" href="#" onclick="showContent('Count_Value')"><i
                                                     class="fas fa-list-ol"></i> Count</a></li>
@@ -383,7 +383,7 @@
                                     </a>
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item" href="#"
-                                                onclick="showContent('Change_Datatype')"><i
+                                                onclick="showContent('Datatypes')"><i
                                                     class="fas fa-exchange-alt"></i> Change Datatype</a></li>
                                     </ul>
                                 </li>
@@ -518,7 +518,7 @@
                                 </form>
                             </div>
 
-                            <div id="Datatypes" class="collapse card card-body mb-3">
+                            <div id="Datatypes1" class="collapse card card-body mb-3">
                                 <form method="POST">
                                     {% csrf_token %}
                                     <div class="mb-3">
@@ -551,35 +551,31 @@
                                 </form>
                             </div>
 
-                            <div id="Change_Datatype" class="collapse card card-body mb-3">
+                            <div id="Datatypes" class="collapse card card-body mb-3">
                                 <form method="POST">
                                     {% csrf_token %}
                                     <div class="mb-3">
-                                        <label for="barChartColumnSelect" class="form-label">Select Column to
-                                            change</label>
-                                        <select class="form-control" id="barChartColumnSelect" name="bar_column"
-                                            >
+                                        <label for="datatype_column" class="form-label">Select Column</label>
+                                        <select class="form-select" id="datatype_column" name="datatype_column" required>
                                             {% for column in column_list %}
-                                            <option value="{{ column }}">{{ column }}</option>
+                                                <option value="{{ column }}">{{ column }}</option>
                                             {% endfor %}
                                         </select>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="datatypeSelect" class="form-label">Select Datatype to change</label>
-                                        <select class="form-control" id="datatypeSelect" name="new_datatype" required>
-                                            <option value="int">Integer</option>
-                                            <option value="float">Float</option>
-                                            <option value="string">String</option>
-                                            <!-- Add more data type options if needed -->
+                                        <label for="new_datatype" class="form-label">New Datatype</label>
+                                        <select class="form-select" id="new_datatype" name="new_datatype" required>
+                                            {% for dtype in data_types %}
+                                                <option value="{{ dtype }}">{{ dtype }}</option>
+                                            {% endfor %}
                                         </select>
                                     </div>
                                     <div class="d-grid gap-2">
-                                        <button type="submit" class="btn btn-primary" name=""
-                                            value="change_datatype">Change Datatype</button>
+                                        <button type="submit" class="btn btn-primary" name="convert_dtype" value="convert_dtype">Convert Datatype</button>
                                     </div>
                                 </form>
                             </div>
-
+                            
 
 
                             <!-- Replace with Nan -->
